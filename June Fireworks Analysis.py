@@ -57,3 +57,36 @@ sns.despine() # Removes the top and right spine
 # Show and save plot
 plt.savefig('Fireworks Graph.png')
 plt.show()
+
+
+# Now let's compare over the long term. Let's look at reports of fireworks by
+# months over the long run.
+fireworks_months = fireworks_df.groupby(pd.Grouper(key='created_date', freq='M')).sum().reset_index()
+
+# Rename columns for clarity
+fireworks_months.columns = ['Year', 'Number of Reports']
+
+# Convert the Month column to strings to grab every June from the past decade
+fireworks_months['Year'] = fireworks_months['Year'].astype(str)
+June = fireworks_months[fireworks_months['Year'].str.endswith('06-30')]
+June['Year'] = June['Year'].str[:-6]
+
+# Turn each column into a list to plot with matplot
+Year = list(June['Year'])
+Occurances = list(June['Number of Reports'])
+
+# Create plot
+plt.figure(figsize=(10,7))
+plt.bar(Year, Occurances, color='darkblue')
+
+# Add title and axis labels
+plt.title('Illegal Fireworks Reported to 311 in June (2010 - 2020)', fontsize=16)
+plt.xlabel('Year', fontsize=12)
+plt.ylabel('Number of Reports', fontsize=12)
+
+# Formatting changes below
+sns.despine() # Removes the top and right spine
+
+# Show and save plot
+plt.savefig('Fireworks in June by Month.png')
+plt.show()
