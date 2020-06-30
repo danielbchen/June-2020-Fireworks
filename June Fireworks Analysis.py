@@ -1,6 +1,7 @@
 # Import packages for data analysis and visualization
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sodapy import Socrata
@@ -31,7 +32,7 @@ fireworks_grouped = fireworks_df.groupby(pd.Grouper(key='created_date', freq='D'
 fireworks_grouped.columns = ['Incident Date', 'Number of Reports']
 
 # Select the incidents from the beginning of June to the most recent data
-fireworks = fireworks_grouped[(fireworks_grouped['Incident Date'] >= '2020-06-01') & (fireworks_grouped['Incident Date'] < '2020-06-23')]
+fireworks = fireworks_grouped[(fireworks_grouped['Incident Date'] >= '2020-06-01') & (fireworks_grouped['Incident Date'] < '2020-06-29')]
 
 # Drop the timestape from the 'Incident Date' column
 pd.options.mode.chained_assignment = None
@@ -41,23 +42,7 @@ fireworks['Incident Date'] = pd.to_datetime(fireworks['Incident Date']).dt.date
 Date = list(fireworks['Incident Date'])
 Count = list(fireworks['Number of Reports'])
 
-# Set figure dimensions and create graph
-plt.figure(figsize=(10,7))
-plt.plot(Date, Count, color='red', alpha=0.6, linewidth=2)
-
-# Add title and axis labels
-plt.title('Illegal Fireworks Reported to 311 in June 2020', fontsize=16)
-plt.xlabel('Date', fontsize=12)
-plt.ylabel('Number of Reports', fontsize=12)
-
-# Formatting changes below
-plt.margins(x=0, y=0) # Removes extra white space between spines and graph
-sns.despine() # Removes the top and right spine
-
-# Show and save plot
-plt.savefig('Fireworks Graph.png')
-plt.show()
-
+################################################################################
 
 # Now let's compare over the long term. Let's look at reports of fireworks by
 # months over the long run.
@@ -75,18 +60,53 @@ June['Year'] = June['Year'].str[:-6]
 Year = list(June['Year'])
 Occurances = list(June['Number of Reports'])
 
-# Create plot
-plt.figure(figsize=(10,7))
-plt.bar(Year, Occurances, color='darkblue')
 
-# Add title and axis labels
-plt.title('Illegal Fireworks Reported to 311 in June (2010 - 2020)', fontsize=16)
-plt.xlabel('Year', fontsize=12)
-plt.ylabel('Number of Reports', fontsize=12)
+################################################################################
 
-# Formatting changes below
-sns.despine() # Removes the top and right spine
+# Plot data
 
-# Show and save plot
-plt.savefig('Fireworks in June by Month.png')
-plt.show()
+# Create a list of custom strings for x tick labels on axis 0
+days = ['June ' + str(day) for day in range(1, 29)]
+
+# Create figure
+fig, ax = plt.subplots(figsize=(10, 8))
+
+# Plot data analyzing trend in June 2020
+ax.bar(Date, Count)
+
+# Add titles and labels for axis zero
+ax.set_title('Illegal Fireworks Reported to 311 June 2020', fontsize=16,
+              fontweight='bold')
+ax.set_xlabel('Date', fontsize=12)
+ax.set_ylabel('Number of Reports', fontsize=12)
+
+# Assign custom x tick labels
+ax.set_xticks(Date)
+ax.set_xticklabels(days, rotation='vertical')
+
+# Remove top and right spine
+sns.despine()
+
+# Save plot
+plt.savefig('Trend in June.png', dpi=600)
+
+###############################################################################
+
+# Create new figure for second graph
+fig, ax = plt.subplots(figsize=(10, 5))
+
+# Plot data analyzing total calls in June from 2010 to 2020
+ax.bar(Year, Occurances);
+
+# Add titles and labels for axis one
+ax.set_title('Illegal Fireworks Reported to 311 June 2010 - June 2020',
+              fontsize=16,
+              fontweight='bold')
+ax.set_xlabel('Year', fontsize=12)
+ax.set_ylabel('Number of Reports', fontsize=12)
+
+# Remove top and right spine
+sns.despine()
+
+# Save plot
+plt.savefig('Trend in June Over Past Decade.png', dpi=600)
