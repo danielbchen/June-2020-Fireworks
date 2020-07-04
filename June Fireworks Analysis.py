@@ -32,7 +32,7 @@ fireworks_grouped = fireworks_df.groupby(pd.Grouper(key='created_date', freq='D'
 fireworks_grouped.columns = ['Incident Date', 'Number of Reports']
 
 # Select the incidents from the beginning of June to the most recent data
-fireworks = fireworks_grouped[(fireworks_grouped['Incident Date'] >= '2020-06-01') & (fireworks_grouped['Incident Date'] < '2020-06-29')]
+fireworks = fireworks_grouped[(fireworks_grouped['Incident Date'] >= '2020-06-01') & (fireworks_grouped['Incident Date'] < '2020-07-01')]
 
 # Drop the timestape from the 'Incident Date' column
 pd.options.mode.chained_assignment = None
@@ -66,7 +66,7 @@ Occurances = list(June['Number of Reports'])
 # Plot data
 
 # Create a list of custom strings for x tick labels on axis 0
-days = ['June ' + str(day) for day in range(1, 29)]
+days = ['June ' + str(day) for day in range(1, 31)]
 
 # Create figure
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -75,7 +75,7 @@ fig, ax = plt.subplots(figsize=(10, 8))
 ax.bar(Date, Count)
 
 # Add titles and labels for axis zero
-ax.set_title('Illegal Fireworks Reported to 311 June 2020', fontsize=16,
+ax.set_title('Illegal Fireworks Reported to 311 (NYC) June 2020', fontsize=16,
               fontweight='bold')
 ax.set_xlabel('Date', fontsize=12)
 ax.set_ylabel('Number of Reports', fontsize=12)
