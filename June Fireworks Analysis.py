@@ -124,17 +124,30 @@ def geo_loader():
     return df
 
 
+def geo_fireworks_merger():
+    '''
+    Merges firework data from 311 with dataframe containing geometry.
+    '''
+
+    geo_df = geo_loader()
+    fireworks_df = fireworks_data_loader()
+
+    june_df = fireworks_df[(fireworks_df['created_date'] >= '2020-06-01') &
+                           (df['created_date'] < '2020-07-01')]
+    june_df = (june_df.groupby('incident_zip')
+               .sum('fireworks')
+               .reset_index()
+               .rename(columns={'incident_zip': 'ZIPCODE',
+                                'fireworks': 'INCIDENT_COUNT'}))
+    
+    df = geo_df.merge(june_df, on='ZIPCODE', how='inner')
+
+    return df
+    
+
 def choropleth_creator():
     '''
     '''
-
-    df = fireworks_data_loader()
-    june_df = df[(df['created_date'] >= '2020-06-01') & (df['created_date'] < '2020-07-01')]
-    june_df_grouped = (june_df.groupby('incident_zip')
-                              .sum('fireworks')
-                              .reset_index()
-                              .rename(columns={'incident_zip': 'ZIPCODE', 
-                                               'fireworks'   : 'INCIDENT_COUNT'}))
 
     merged = nyc.merge(june_df_grouped, on='ZIPCODE', how='inner')
 
