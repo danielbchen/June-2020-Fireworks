@@ -133,36 +133,36 @@ def geo_fireworks_merger():
     fireworks_df = fireworks_data_loader()
 
     june_df = fireworks_df[(fireworks_df['created_date'] >= '2020-06-01') &
-                           (df['created_date'] < '2020-07-01')]
+                           (fireworks_df['created_date'] < '2020-07-01')]
     june_df = (june_df.groupby('incident_zip')
-               .sum('fireworks')
-               .reset_index()
-               .rename(columns={'incident_zip': 'ZIPCODE',
-                                'fireworks': 'INCIDENT_COUNT'}))
+                      .sum('fireworks')
+                      .reset_index()
+                      .rename(columns={'incident_zip': 'ZIPCODE',
+                                       'fireworks'   : 'INCIDENT_COUNT'}))
     
     df = geo_df.merge(june_df, on='ZIPCODE', how='inner')
 
     return df
-    
+
 
 def choropleth_creator():
     '''
     '''
 
-    merged = nyc.merge(june_df_grouped, on='ZIPCODE', how='inner')
+    df = geo_fireworks_merger()
 
     fig, ax = plt.subplots(figsize=(12, 12))
 
-    merged.plot(ax=ax, column='INCIDENT_COUNT', linewidth=0.5, edgecolor='black',
-                legend=True, cmap='Reds', legend_kwds={'shrink': 0.7})
-    #merged.apply(lambda x: ax.annotate(s=x.ZIPCODE, color='black',
-    #                                   xy=x.geometry.centroid.coords[0], ha='center', fontsize=4),
-    #                                   axis=1)
+    df.plot(ax=ax, column='INCIDENT_COUNT', linewidth=0.5, edgecolor='black',
+            legend=True, cmap='Reds', legend_kwds={'shrink': 0.7})
+    #df.apply(lambda x: ax.annotate(s=x.ZIPCODE, color='black',
+    #                               xy=x.geometry.centroid.coords[0], ha='center', fontsize=4),
+    #                               axis=1)
 
     ax.axis('off')
     ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020',
                  fontsize=18, fontweight='bold')
 
     plt.show();
-    #plt.savefig('.png', dpi=800)
+    #plt.savefig('Fireworks Choropleth.png', dpi=800)
     #plt.close()
