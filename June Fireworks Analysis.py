@@ -130,13 +130,17 @@ def choropleth_creator():
 
     merged = nyc.merge(june_df_grouped, on='ZIPCODE', how='inner')
 
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(12, 12))
 
     merged.plot(ax=ax, column='INCIDENT_COUNT', linewidth=0.5, edgecolor='black',
                 legend=True, cmap='Reds', legend_kwds={'shrink': 0.7})
+    #merged.apply(lambda x: ax.annotate(s=x.ZIPCODE, color='black',
+    #                                   xy=x.geometry.centroid.coords[0], ha='center', fontsize=4),
+    #                                   axis=1)
+
     ax.axis('off')
     ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020',
-                 fontsize=16, fontweight='bold')
+                 fontsize=18, fontweight='bold')
 
     plt.show();
     #plt.savefig('.png', dpi=800)
