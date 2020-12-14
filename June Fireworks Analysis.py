@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.dates import date2num
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -47,8 +48,20 @@ def plotter():
     '''Prep data to create subplot showing daily reports'''
     daily_reports = incident_grouper(df, 'D')
 
-    daily_reports = (daily_reports[(daily_reports['created_date'] >= '2020-06-01') &
-                                   (daily_reports['created_date'] < '2020-07-11')])
+    daily_reports_2020 = (daily_reports[(daily_reports['created_date'] >= '2020-06-01') &
+                                        (daily_reports['created_date'] < '2020-07-11')])
+    daily_reports_2019 = (daily_reports[(daily_reports['created_date'] >= '2019-06-01') &
+                                        (daily_reports['created_date'] < '2019-07-11')])
+    daily_reports_2020['ID'] = range(0, len(daily_reports_2020))
+    daily_reports_2019['ID'] = range(0, len(daily_reports_2019))
+    counts = daily_reports_2020.merge(daily_reports_2019, on='ID')
+
+    counts = counts[['created_date_x', 'fireworks_x', 'fireworks_y']]
+    counts.columns = ['Date', 'Fireworks_2020', 'Fireworks_2019']
+
+    x_dates = date2num(counts['Date'])
+
+    width = .4
 
     june_days = ['June ' + str(number) for number in range(1, 31)]
     july_days = ['July ' + str(number) for number in range(1, 11)]
@@ -61,20 +74,19 @@ def plotter():
     june_reports_x_labels = ['June ' + str(year) for year in range(2010, 2021)]
 
 
-    fig, axs = plt.subplots(2, 1, figsize=(18, 20))
+    fig, axs = plt.subplots(2, 1, figsize=(20, 20))
 
     plt.rcParams['font.family'] = 'arial'
 
     '''Plot first subplot'''
-    axs[0].fill_between(daily_reports['created_date'], daily_reports['fireworks'],
-                        color='skyblue', alpha=0.4)
-    axs[0].plot(daily_reports['created_date'], daily_reports['fireworks'])
+    axs[0].bar(x_dates - width/2, counts['Fireworks_2020'], width, align='center')
+    axs[0].bar(x_dates + + width/2, counts['Fireworks_2019'], width, align='center')
 
     axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n',
                      fontsize=16)
-    axs[0].set_xticks(daily_reports['created_date'])
+    axs[0].set_xticks(x_dates)
     axs[0].set_xticklabels(daily_reports_x_labels, rotation='vertical')
-    
+
     axs[0].margins(x=0, y=0)
     axs[0].spines['top'].set_visible(False)
     axs[0].spines['right'].set_visible(False)
