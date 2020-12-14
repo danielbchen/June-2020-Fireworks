@@ -1,3 +1,4 @@
+import geopandas as gpd
 import matplotlib.pyplot as plt
 from matplotlib.dates import date2num
 import numpy as np
@@ -112,4 +113,30 @@ def plotter():
     #plt.close()
 
 
+def choropleth_creator():
+    '''
+    '''
 
+    link = 'https://data.beta.nyc/dataset/3bf5fb73-edb5-4b05-bb29-7c95f4a727fc/resource/894e9162-871c-4552-a09c-c6915d8783fb/download/zip_code_040114.geojson'
+    nyc = gpd.read_file(link)
+
+    df = fireworks_data_loader()
+    june_df = df[(df['created_date'] >= '2020-06-01') & (df['created_date'] < '2020-07-01')]
+    june_df_grouped = (june_df.groupby('incident_zip')
+                              .sum('fireworks')
+                              .reset_index()
+                              .rename(columns={'incident_zip': 'ZIPCODE', 
+                                               'fireworks'   : 'INCIDENT_COUNT'}))
+
+    merged = nyc.merge(june_df_grouped, on='ZIPCODE', how='inner')
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+
+    merged.plot(ax=ax, column='INCIDENT_COUNT', linewidth=0.5, edgecolor='black',
+                legend=True, cmap='Reds', legend_kwds={'shrink': 0.7})
+    ax.axis('off')
+    ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020', fontsize=16, fontweight='bold')
+
+    plt.show();
+    #plt.savefig('.png', dpi=800)
+    #plt.close()
