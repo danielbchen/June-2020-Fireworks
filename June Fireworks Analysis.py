@@ -42,6 +42,11 @@ def incident_grouper(dataframe, frequency):
 
 def plotter():
     '''
+    Creates two subplots on one figure. 
+    First shows reported illegal fireworks by day from June 1 to July 10 in 2020
+    and 2019. 
+    Second shows the total number of illegal fireworks reported in June from 
+    2010 to 2020. 
     '''
 
     df = fireworks_data_loader()
