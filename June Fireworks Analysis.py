@@ -1,7 +1,3 @@
-# Import packages for data analysis and visualization
-
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -15,8 +11,6 @@ def fireworks_data_loader():
     https://data.cityofnewyork.us/Social-Services/311-Fireworks-Complaints/g4u2-tvag
     '''
 
-# Use unathenticated client with publicly avaibale data set
-# Return entire data set
     client = Socrata('data.cityofnewyork.us', None)
     results = client.get_all('g4u2-tvag')
 
@@ -28,16 +22,21 @@ def fireworks_data_loader():
     return df 
 
 
-# Convert 'created_date' column to datetime object to plot
-fireworks_df['created_date'] = pd.to_datetime(fireworks_df['created_date'], errors='coerce')
+def incident_grouper(dataframe, frequency):
+    '''
+    Takes in dataframe and returns a new dataframe grouped by a user-defined 
+    frequency.
+    '''
 
-# Create a new dummy column. If 'complaint_type' equals illegal fireworks
-# then the column will contain a 1. Otherwise, it will be zero.
-fireworks_df['fireworks'] = [1 if complaint == 'Illegal Fireworks' else 0 for
-complaint in fireworks_df['complaint_type']]
+    df = dataframe.copy()
 
-# Group incidents by date of occurance.
-fireworks_grouped = fireworks_df.groupby(pd.Grouper(key='created_date', freq='D')).sum().reset_index()
+    df = (df.groupby(
+          pd.Grouper(key='created_date', freq=frequency))
+            .sum('fireworks')
+            .reset_index())
+
+    return df 
+
 
 # Renme columns for clarity
 fireworks_grouped.columns = ['Incident Date', 'Number of Reports']
