@@ -8,13 +8,17 @@ import pandas as pd
 import seaborn as sns
 from sodapy import Socrata
 
-# Load 311 NYC fireworks complaing data. Publicly available at:
-# https://data.cityofnewyork.us/Social-Services/311-Fireworks-Complaints/g4u2-tvag
+
+def fireworks_data_loader():
+    '''
+    Loads in fireworks data from NYC 311.
+    https://data.cityofnewyork.us/Social-Services/311-Fireworks-Complaints/g4u2-tvag
+    '''
 
 # Use unathenticated client with publicly avaibale data set
 # Return entire data set
-client = Socrata('data.cityofnewyork.us', None)
-results = client.get_all('g4u2-tvag')
+    client = Socrata('data.cityofnewyork.us', None)
+    results = client.get_all('g4u2-tvag')
 
     df = pd.DataFrame.from_records(results)
     
