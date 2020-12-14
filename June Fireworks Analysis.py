@@ -66,18 +66,17 @@ def plotter():
     '''Prep data to create subplot showing daily reports'''
     daily_reports = incident_grouper(df, 'D')
 
-    daily_reports_2020 = (daily_reports[(daily_reports['created_date'] >= '2020-06-01') &
-                                        (daily_reports['created_date'] < '2020-07-11')])
-    daily_reports_2019 = (daily_reports[(daily_reports['created_date'] >= '2019-06-01') &
-                                        (daily_reports['created_date'] < '2019-07-11')])
-    daily_reports_2020['ID'] = range(0, len(daily_reports_2020))
-    daily_reports_2019['ID'] = range(0, len(daily_reports_2019))
-    counts = daily_reports_2020.merge(daily_reports_2019, on='ID')
+    reports_2020 = date_filterer(daily_reports, '2020-06-01', '2020-07-11')
+    reports_2019 = date_filterer(daily_reports, '2019-06-01', '2019-07-11')
+    reports_2020['ID'] = range(len(reports_2020))
+    reports_2019['ID'] = range(len(reports_2019))
 
-    counts = counts[['created_date_x', 'fireworks_x', 'fireworks_y']]
-    counts.columns = ['Date', 'Fireworks_2020', 'Fireworks_2019']
+    reports = reports_2020.merge(reports_2019, on='ID')
 
-    x_dates = date2num(counts['Date'])
+    reports = reports[['created_date_x', 'fireworks_x', 'fireworks_y']]
+    reports.columns = ['Date', 'Fireworks_2020', 'Fireworks_2019']
+
+    xaxis_dates = date2num(reports['Date'])
 
     width = .4
 
@@ -97,12 +96,12 @@ def plotter():
     plt.rcParams['font.family'] = 'arial'
 
     '''Plot first subplot'''
-    axs[0].bar(x_dates - width/2, counts['Fireworks_2020'], width, align='center')
-    axs[0].bar(x_dates + width/2, counts['Fireworks_2019'], width, align='center')
+    axs[0].bar(xaxis_dates - width / 2, reports['Fireworks_2020'], width, align='center')
+    axs[0].bar(xaxis_dates + width / 2, reports['Fireworks_2019'], width, align='center')
 
     axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n',
                      fontsize=16)
-    axs[0].set_xticks(x_dates)
+    axs[0].set_xticks(xaxis_dates)
     axs[0].set_xticklabels(daily_reports_x_labels, rotation='vertical')
 
     axs[0].margins(x=0, y=0)
