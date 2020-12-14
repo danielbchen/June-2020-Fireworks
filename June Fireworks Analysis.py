@@ -40,6 +40,18 @@ def incident_grouper(dataframe, frequency):
     return df 
 
 
+def date_filterer(dataframe, start, end):
+    '''
+    Subsets a dataframe by dates. 
+    '''
+
+    df = dataframe.copy()
+
+    df = df[(df['created_date'] >= start) & (df['created_date'] < end)]
+
+    return df
+
+
 def plotter():
     '''
     Creates two subplots on one figure. 
