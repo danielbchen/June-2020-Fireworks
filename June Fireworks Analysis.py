@@ -16,8 +16,13 @@ from sodapy import Socrata
 client = Socrata('data.cityofnewyork.us', None)
 results = client.get_all('g4u2-tvag')
 
-# Convert data to pandas DataFrame
-fireworks_df = pd.DataFrame.from_records(results)
+    df = pd.DataFrame.from_records(results)
+    
+    df['created_date'] = pd.to_datetime(df['created_date'], errors='coerce')
+    df['fireworks'] = [1 if complaint == 'Illegal Fireworks' else 0 for complaint in fireworks_df['complaint_type']]
+
+    return df 
+
 
 # Convert 'created_date' column to datetime object to plot
 fireworks_df['created_date'] = pd.to_datetime(fireworks_df['created_date'], errors='coerce')
