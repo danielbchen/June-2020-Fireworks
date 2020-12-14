@@ -147,6 +147,8 @@ def geo_fireworks_merger():
 
 def choropleth_creator():
     '''
+    Returns a choropleth showing the number of illegal fireworks reported to 
+    311 in June by zip code. 
     '''
 
     df = geo_fireworks_merger()
