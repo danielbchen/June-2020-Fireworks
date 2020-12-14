@@ -96,7 +96,7 @@ def plotter():
              ha='center', va='center', rotation=90, fontsize=16)
 
     plt.show();
-    #plt.save_fig('', dpi=600)
+    #plt.save_fig('Reported Fireworks Cases in NYC.png', dpi=800)
     #plt.close()
 
 
