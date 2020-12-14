@@ -80,7 +80,7 @@ def plotter():
 
     '''Plot first subplot'''
     axs[0].bar(x_dates - width/2, counts['Fireworks_2020'], width, align='center')
-    axs[0].bar(x_dates + + width/2, counts['Fireworks_2019'], width, align='center')
+    axs[0].bar(x_dates + width/2, counts['Fireworks_2019'], width, align='center')
 
     axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n',
                      fontsize=16)
