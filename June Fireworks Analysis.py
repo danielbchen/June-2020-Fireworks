@@ -38,19 +38,35 @@ def incident_grouper(dataframe, frequency):
     return df 
 
 
-# Renme columns for clarity
-fireworks_grouped.columns = ['Incident Date', 'Number of Reports']
+def plotter():
+    '''
+    '''
 
-# Select the incidents from the beginning of June to the most recent data
-fireworks = fireworks_grouped[(fireworks_grouped['Incident Date'] >= '2020-06-01') & (fireworks_grouped['Incident Date'] < '2020-07-01')]
+    df = fireworks_data_loader()
 
-# Drop the timestape from the 'Incident Date' column
-pd.options.mode.chained_assignment = None
-fireworks['Incident Date'] = pd.to_datetime(fireworks['Incident Date']).dt.date
+    '''Create first subplot showing daily reports'''
+    daily_reports = incident_grouper(df, 'D')
 
-# Convert the columns to a list object in order to graph
-Date = list(fireworks['Incident Date'])
-Count = list(fireworks['Number of Reports'])
+    daily_reports = (daily_reports[(daily_reports['created_date'] >= '2020-06-01') &
+                                   (daily_reports['created_date'] < '2020-07-11')])
+
+    june_days = ['June ' + str(number) for number in range(1, 31)]
+    july_days = ['July ' + str(number) for number in range(1, 11)]
+    daily_reports_x_labels = june_days + july_days
+
+    fig, axs = plt.subplots(2, 1, figsize=(15, 10))
+
+    axs[0].bar(daily_reports['created_date'], daily_reports['fireworks'])
+
+    axs[0].set_title('Number of Daily Reported Illegal Fireworks \n')
+    axs[0].set_xticks(daily_reports['created_date'])
+    axs[0].set_xticklabels(daily_reports_x_labels, rotation='vertical')
+
+    axs[0].spines['top'].set_visible(False)
+    axs[0].spines['right'].set_visible(False)
+
+    plt.show();
+
 
 ################################################################################
 
