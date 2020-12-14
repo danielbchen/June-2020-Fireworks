@@ -113,12 +113,20 @@ def plotter():
     #plt.close()
 
 
-def choropleth_creator():
+def geo_loader():
     '''
+    Loads in geojson of NYC zipcodes. 
     '''
 
     link = 'https://data.beta.nyc/dataset/3bf5fb73-edb5-4b05-bb29-7c95f4a727fc/resource/894e9162-871c-4552-a09c-c6915d8783fb/download/zip_code_040114.geojson'
-    nyc = gpd.read_file(link)
+    df = gpd.read_file(link)
+
+    return df
+
+
+def choropleth_creator():
+    '''
+    '''
 
     df = fireworks_data_loader()
     june_df = df[(df['created_date'] >= '2020-06-01') & (df['created_date'] < '2020-07-01')]
