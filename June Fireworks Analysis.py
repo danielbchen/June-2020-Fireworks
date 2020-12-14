@@ -135,7 +135,8 @@ def choropleth_creator():
     merged.plot(ax=ax, column='INCIDENT_COUNT', linewidth=0.5, edgecolor='black',
                 legend=True, cmap='Reds', legend_kwds={'shrink': 0.7})
     ax.axis('off')
-    ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020', fontsize=16, fontweight='bold')
+    ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020',
+                 fontsize=16, fontweight='bold')
 
     plt.show();
     #plt.savefig('.png', dpi=800)
