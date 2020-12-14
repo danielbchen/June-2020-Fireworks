@@ -61,24 +61,39 @@ def plotter():
     june_reports_x_labels = ['June ' + str(year) for year in range(2010, 2021)]
 
 
-    fig, axs = plt.subplots(2, 1, figsize=(15, 10))
+    fig, axs = plt.subplots(2, 1, figsize=(18, 20))
+
+    plt.rcParams['font.family'] = 'arial'
 
     '''Plot first subplot'''
     axs[0].fill_between(daily_reports['created_date'], daily_reports['fireworks'],
                         color='skyblue', alpha=0.4)
     axs[0].plot(daily_reports['created_date'], daily_reports['fireworks'])
 
-    axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n')
+    axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n',
+                     fontsize=16)
     axs[0].set_xticks(daily_reports['created_date'])
     axs[0].set_xticklabels(daily_reports_x_labels, rotation='vertical')
-
+    
+    axs[0].margins(x=0, y=0)
     axs[0].spines['top'].set_visible(False)
     axs[0].spines['right'].set_visible(False)
 
     '''Plot second subplot'''
     axs[1].bar(june_reports['created_date'], june_reports['fireworks'])
     
+    axs[1].set_title('\n Total Reported Cases in June Across the Past Decade \n',
+                     fontsize=16)
     axs[1].set_xticklabels(june_reports_x_labels)
+
+    axs[1].spines['top'].set_visible(False)
+    axs[1].spines['right'].set_visible(False)
+
+    fig.suptitle('Tracking Reported Cases of Illegal Fireworks in NYC',
+                 fontsize=20, fontweight='bold',
+                 x=0.5, y=0.94)
+    fig.text(0.08, 0.5, 'Number of Calls to 311',
+             ha='center', va='center', rotation=90, fontsize=16)
 
     plt.show();
     #plt.save_fig('', dpi=600)
