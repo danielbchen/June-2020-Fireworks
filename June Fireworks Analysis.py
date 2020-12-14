@@ -187,5 +187,8 @@ def choropleth_creator():
 
 
 if __name__ == '__main__':
+    print('Saving line plots.')
     plotter()
+    print('Saving choropleth.')
     choropleth_creator()
+    print('The files have been saved!')
