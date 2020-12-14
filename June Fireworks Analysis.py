@@ -44,7 +44,7 @@ def plotter():
 
     df = fireworks_data_loader()
 
-    '''Create first subplot showing daily reports'''
+    '''Prep data to create subplot showing daily reports'''
     daily_reports = incident_grouper(df, 'D')
 
     daily_reports = (daily_reports[(daily_reports['created_date'] >= '2020-06-01') &
@@ -54,18 +54,35 @@ def plotter():
     july_days = ['July ' + str(number) for number in range(1, 11)]
     daily_reports_x_labels = june_days + july_days
 
+    '''Prep data to create subplot showing reports in June over time'''
+    june_reports = incident_grouper(df, 'M')
+    june_reports['created_date'] = june_reports['created_date'].astype(str)
+    june_reports = june_reports[june_reports['created_date'].str.endswith('06-30')]
+    june_reports_x_labels = ['June ' + str(year) for year in range(2010, 2021)]
+
+
     fig, axs = plt.subplots(2, 1, figsize=(15, 10))
 
-    axs[0].bar(daily_reports['created_date'], daily_reports['fireworks'])
+    '''Plot first subplot'''
+    axs[0].fill_between(daily_reports['created_date'], daily_reports['fireworks'],
+                        color='skyblue', alpha=0.4)
+    axs[0].plot(daily_reports['created_date'], daily_reports['fireworks'])
 
-    axs[0].set_title('Number of Daily Reported Illegal Fireworks \n')
+    axs[0].set_title('Number of Daily Reported Illegal Fireworks in 2020 \n')
     axs[0].set_xticks(daily_reports['created_date'])
     axs[0].set_xticklabels(daily_reports_x_labels, rotation='vertical')
 
     axs[0].spines['top'].set_visible(False)
     axs[0].spines['right'].set_visible(False)
 
+    '''Plot second subplot'''
+    axs[1].bar(june_reports['created_date'], june_reports['fireworks'])
+    
+    axs[1].set_xticklabels(june_reports_x_labels)
+
     plt.show();
+    #plt.save_fig('', dpi=600)
+    #plt.close()
 
 
 ################################################################################
