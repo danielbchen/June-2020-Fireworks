@@ -23,7 +23,7 @@ def fireworks_data_loader():
     df = pd.DataFrame.from_records(results)
     
     df['created_date'] = pd.to_datetime(df['created_date'], errors='coerce')
-    df['fireworks'] = [1 if complaint == 'Illegal Fireworks' else 0 for complaint in fireworks_df['complaint_type']]
+    df['fireworks'] = [1 if complaint == 'Illegal Fireworks' else 0 for complaint in df['complaint_type']]
 
     return df 
 
