@@ -125,7 +125,7 @@ def plotter():
              ha='center', va='center', rotation=90, fontsize=16)
 
     #plt.show();
-    plt.save_fig('Reported Fireworks Cases in NYC.png', dpi=800)
+    plt.savefig('Reported Fireworks Cases in NYC.png', dpi=800, facecolor='white')
     plt.close()
 
 
@@ -182,7 +182,7 @@ def choropleth_creator():
                  fontsize=18, fontweight='bold')
 
     #plt.show();
-    plt.savefig('Fireworks Choropleth.png', dpi=800)
+    plt.savefig('Fireworks Choropleth.png', dpi=800, facecolor='white')
     plt.close()
 
 
