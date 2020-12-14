@@ -124,9 +124,9 @@ def plotter():
     fig.text(0.08, 0.5, 'Number of Calls to 311',
              ha='center', va='center', rotation=90, fontsize=16)
 
-    plt.show();
-    #plt.save_fig('Reported Fireworks Cases in NYC.png', dpi=800)
-    #plt.close()
+    #plt.show();
+    plt.save_fig('Reported Fireworks Cases in NYC.png', dpi=800)
+    plt.close()
 
 
 def geo_loader():
@@ -181,6 +181,11 @@ def choropleth_creator():
     ax.set_title('Reports of Illegal Fireworks by Zip Code in June 2020',
                  fontsize=18, fontweight='bold')
 
-    plt.show();
-    #plt.savefig('Fireworks Choropleth.png', dpi=800)
-    #plt.close()
+    #plt.show();
+    plt.savefig('Fireworks Choropleth.png', dpi=800)
+    plt.close()
+
+
+if __name__ == '__main__':
+    plotter()
+    choropleth_creator()
