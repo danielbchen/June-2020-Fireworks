@@ -11,4 +11,6 @@ Arguably, it may be insufficient to compare two years of data. Yet the story hol
 
 ![Image showing trend in fireworks](https://github.com/danielbchen/June-2020-Fireworks/blob/master/Reported%20Fireworks%20Cases%20in%20NYC.png)
 
+
+
 Although the data is atyptical, there is a persistent argument that New York City residents are traveling across state lines to purchase fireworks because they are illegal in New York State. However, it's unlikely that people are traveling and spending income on pyrotechnics for entertainment in the midst of a global pandemic that has led to unemployment levels observed during the Great Depression, 
