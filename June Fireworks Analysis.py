@@ -194,8 +194,3 @@ if __name__ == '__main__':
     print('Saving choropleth.')
     choropleth_creator()
     print('The files have been saved!')
-
-
-df[df['ZIPCODE'] == '11226']
-df['INCIDENT_COUNT'].sort_values()
-df[df['INCIDENT_COUNT'] == 723]
